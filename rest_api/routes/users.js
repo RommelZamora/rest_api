@@ -55,4 +55,43 @@ router.post('/save', function(req, res, next) {
 .catch(error => res.status(400).send(error)) 
 });
 
+/* PUT user. */
+router.put('/update', function(req, res, next) {  
+
+  let {id, email, username, password} = req.body;
+      
+  Users.update({
+    email: email,
+    username: username,
+    password: password,
+    logins: 0,
+    last_login: 0
+  },
+  {
+      where: {
+        id: parseInt(id)
+      }
+  })
+  .then(users => {  
+    res.json(users);  
+})  
+.catch(error => res.status(400).send(error)) 
+});
+
+/* DELETE user. */
+router.delete('/delete/:id', function(req, res, next) {  
+
+  let id = parseInt(req.params.id);
+      
+  Users.destroy({
+    where: { 
+      id: id
+    }
+  })
+  .then(users => {  
+  res.json(users);  
+})  
+.catch(error => res.status(400).send(error)) 
+});
+
 module.exports = router;
